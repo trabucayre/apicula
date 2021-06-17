@@ -1,4 +1,4 @@
-all: attosoc-tec0117.fs blinky-tec0117.fs blinky-runber.fs blinky-tangnano.fs
+all: attosoc-tec0117.fs blinky-tec0117.fs blinky-runber.fs blinky-tangnano.fs blinky-honeycomb.fs
 
 %-tec0117.fs: %-tec0117.json
 	gowin_pack -d GW1N-9 -o $@ $^
@@ -17,6 +17,12 @@ all: attosoc-tec0117.fs blinky-tec0117.fs blinky-runber.fs blinky-tangnano.fs
 
 %-tangnano.json: %.json
 	nextpnr-gowin --json $^ --write $@ --device GW1N-LV1QN48C6/I5 --cst tangnano.cst
+
+%-honeycomb.fs: %-honeycomb.json
+	gowin_pack -d GW1NS-2 -o $@ $^
+
+%-honeycomb.json: %.json
+	nextpnr-gowin --json $^ --write $@ --device GW1NS-UX2CQN48C5/I4 --cst honeycomb.cst
 
 attosoc.json: attosoc/attosoc.v attosoc/picorv32.v
 	yosys -p "synth_gowin -json $@" $^
